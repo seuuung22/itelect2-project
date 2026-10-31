@@ -1,11 +1,16 @@
+import "dotenv/config";
 import express from 'express';
 import cors from 'cors';
 import morgan from 'morgan';
 import router from './routes/index.js';
 
 const app = express();
+const allowedOrigins = process.env.CORS_ORIGIN
+  ?.split(',')
+  .map((origin) => origin.trim())
+  .filter(Boolean);
 
-app.use(cors());
+app.use(cors(allowedOrigins?.length ? { origin: allowedOrigins } : {}));
 app.use(morgan('dev'));
 app.use(express.json()); 
 
